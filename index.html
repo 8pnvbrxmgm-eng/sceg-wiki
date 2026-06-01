@@ -1,0 +1,1135 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>SCEG Wiki — Assistant Académique Intelligent</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --ink:    #0d1117;
+  --ink2:   #161c26;
+  --ink3:   #1e2736;
+  --ink4:   #273044;
+  --line:   rgba(255,255,255,0.07);
+  --line2:  rgba(255,255,255,0.13);
+  --em:     #00c9a7;
+  --em2:    #00e8c0;
+  --em-d:   rgba(0,201,167,0.12);
+  --warm:   #f97316;
+  --warm-d: rgba(249,115,22,0.12);
+  --sky:    #38bdf8;
+  --sky-d:  rgba(56,189,248,0.12);
+  --snow:   #f0f4f8;
+  --mist:   #8899aa;
+  --ghost:  #445566;
+  --danger: #ff6b6b;
+  --danger-d: rgba(255,107,107,0.12);
+  --ok:     #22d3a0;
+  --ok-d:   rgba(34,211,160,0.12);
+  --r:      14px;
+  --r-s:    9px;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:'Outfit',sans-serif;background:var(--ink);color:var(--snow);min-height:100vh;overflow-x:hidden}
+h1,h2,h3,.serif{font-family:'Cormorant Garamond',serif}
+
+/* ── SCREENS ── */
+.screen{display:none;min-height:100vh;flex-direction:column}
+.screen.active{display:flex}
+
+/* ── NAVBAR ── */
+.topbar{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:.9rem 3rem;position:sticky;top:0;z-index:200;
+  background:rgba(13,17,23,.88);backdrop-filter:blur(18px);
+  border-bottom:1px solid var(--line);
+}
+.brand{display:flex;align-items:center;gap:10px;cursor:pointer;text-decoration:none}
+.brand-mark{
+  width:38px;height:38px;border-radius:10px;
+  background:linear-gradient(135deg,var(--em),#0097ff);
+  display:flex;align-items:center;justify-content:center;
+  font-family:'Outfit',sans-serif;font-weight:700;font-size:13px;color:#0d1117;letter-spacing:.03em
+}
+.brand-name{font-family:'Cormorant Garamond',serif;font-size:1.3rem;font-weight:600;color:var(--snow);letter-spacing:.02em}
+.topbar-links{display:flex;gap:.5rem;align-items:center}
+.btn{padding:.5rem 1.2rem;border-radius:var(--r-s);font-family:'Outfit',sans-serif;font-size:.85rem;font-weight:500;cursor:pointer;border:none;transition:all .2s}
+.btn-ghost{background:transparent;color:var(--mist);border:1px solid var(--line)}
+.btn-ghost:hover{background:var(--ink3);color:var(--snow);border-color:var(--line2)}
+.btn-em{background:linear-gradient(135deg,var(--em),#0097ff);color:#0d1117;font-weight:700}
+.btn-em:hover{transform:translateY(-1px);box-shadow:0 6px 24px rgba(0,201,167,.3)}
+.btn-line{background:transparent;color:var(--em2);border:1px solid var(--em)}
+.btn-line:hover{background:var(--em-d)}
+.btn-full{width:100%;padding:.75rem;font-size:.9rem;border-radius:var(--r-s)}
+
+/* ══════════════════════════════════════
+   HERO WITH REAL PHOTO BACKGROUND
+══════════════════════════════════════ */
+.hero-wrap{position:relative;min-height:100vh;display:flex;flex-direction:column;overflow:hidden}
+
+/* Photo mosaic background */
+.hero-photos{
+  position:absolute;inset:0;z-index:0;
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  grid-template-rows:repeat(3,1fr);
+  opacity:.18;
+  filter:saturate(0.6);
+}
+.hero-photo{
+  background-size:cover;background-position:center;
+  transition:opacity .3s;
+}
+/* Unsplash free photos — economy/business/finance themes */
+.hp1{background-image:url('https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?w=600&q=70')}  /* stock charts */
+.hp2{background-image:url('https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=600&q=70')}  /* city buildings */
+.hp3{background-image:url('https://images.unsplash.com/photo-1554224155-6726b3ff858f?w=600&q=70')}  /* calculator finance */
+.hp4{background-image:url('https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=600&q=70')}  /* laptop charts */
+.hp5{background-image:url('https://images.unsplash.com/photo-1507679799987-c73779587ccf?w=600&q=70')}  /* business man */
+.hp6{background-image:url('https://images.unsplash.com/photo-1444653614773-995cb1ef9efa?w=600&q=70')}  /* coins money */
+.hp7{background-image:url('https://images.unsplash.com/photo-1590283603385-17ffb3a7f29f?w=600&q=70')}  /* trading screen */
+.hp8{background-image:url('https://images.unsplash.com/photo-1526304640581-d334cdbbf45e?w=600&q=70')}  /* bar graph */
+.hp9{background-image:url('https://images.unsplash.com/photo-1543286386-2e659306cd6c?w=600&q=70')}  /* graph paper */
+.hp10{background-image:url('https://images.unsplash.com/photo-1518186285589-2f7649de83e0?w=600&q=70')} /* meeting room */
+.hp11{background-image:url('https://images.unsplash.com/photo-1579621970563-ebec7560ff3e?w=600&q=70')} /* global commerce */
+.hp12{background-image:url('https://images.unsplash.com/photo-1633158829585-23ba8f7c8caf?w=600&q=70')} /* data analytics */
+
+/* Dark overlay gradient on top of photos */
+.hero-overlay{
+  position:absolute;inset:0;z-index:1;
+  background:
+    linear-gradient(to bottom, rgba(13,17,23,.7) 0%, rgba(13,17,23,.5) 40%, rgba(13,17,23,.85) 80%, rgba(13,17,23,1) 100%),
+    linear-gradient(135deg, rgba(0,201,167,.08) 0%, transparent 50%, rgba(0,151,255,.06) 100%);
+}
+
+.hero-body{
+  position:relative;z-index:2;flex:1;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  text-align:center;padding:6rem 2rem 3rem;
+}
+.hero-tag{
+  display:inline-flex;align-items:center;gap:8px;
+  background:rgba(0,201,167,.1);border:1px solid rgba(0,201,167,.3);
+  border-radius:50px;padding:.4rem 1.1rem;font-size:.78rem;
+  color:var(--em2);margin-bottom:2rem;font-weight:500;letter-spacing:.04em;text-transform:uppercase;
+}
+.hero-tag .dot{width:6px;height:6px;background:var(--em2);border-radius:50%;animation:blink 2s ease-in-out infinite}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.3}}
+.hero h1{
+  font-size:clamp(2.4rem,5.5vw,4.5rem);line-height:1.05;
+  max-width:820px;color:var(--snow);margin-bottom:1.5rem;font-weight:600;
+}
+.hero h1 em{color:var(--em2);font-style:italic}
+.hero-sub{font-size:1.05rem;color:var(--mist);max-width:560px;line-height:1.8;margin-bottom:2.5rem}
+.hero-cta{display:flex;gap:1rem;justify-content:center;flex-wrap:wrap}
+.hero-cta .btn{padding:.8rem 2.2rem;font-size:.95rem;border-radius:11px}
+
+.hero-nums{
+  position:relative;z-index:2;
+  display:grid;grid-template-columns:repeat(4,1fr);
+  border-top:1px solid var(--line);
+  background:rgba(13,17,23,.75);backdrop-filter:blur(10px);
+}
+.hero-num{text-align:center;padding:1.5rem 1rem;border-right:1px solid var(--line)}
+.hero-num:last-child{border-right:none}
+.hero-num .n{font-family:'Cormorant Garamond',serif;font-size:2.2rem;font-weight:700;color:var(--em2);line-height:1}
+.hero-num .l{font-size:.75rem;color:var(--ghost);margin-top:5px;letter-spacing:.04em;text-transform:uppercase}
+
+/* ── SECTIONS ── */
+.section{padding:5rem 2rem;max-width:1120px;margin:0 auto}
+.section-head{text-align:center;margin-bottom:3rem}
+.section-head h2{font-size:2.4rem;margin-bottom:.6rem}
+.section-head p{color:var(--mist);font-size:1rem;max-width:500px;margin:0 auto}
+.tag-line{
+  display:inline-block;font-size:.72rem;font-weight:600;letter-spacing:.1em;
+  text-transform:uppercase;color:var(--em2);margin-bottom:.75rem;
+}
+
+/* FEATURES */
+.feat-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:1px;background:var(--line);border:1px solid var(--line)}
+.feat-card{
+  background:var(--ink);padding:2rem 1.75rem;transition:background .2s;cursor:default;
+  position:relative;overflow:hidden;
+}
+.feat-card::before{
+  content:'';position:absolute;top:0;left:0;right:0;height:2px;
+  background:linear-gradient(90deg,var(--em),#0097ff);
+  transform:scaleX(0);transition:transform .3s;transform-origin:left;
+}
+.feat-card:hover{background:var(--ink2)}
+.feat-card:hover::before{transform:scaleX(1)}
+.feat-letter{
+  width:44px;height:44px;border-radius:10px;
+  display:flex;align-items:center;justify-content:center;
+  font-family:'Cormorant Garamond',serif;font-size:1.4rem;font-weight:700;color:#0d1117;
+  margin-bottom:1.25rem;
+}
+.feat-card h3{font-family:'Outfit',sans-serif;font-size:.95rem;font-weight:600;margin-bottom:.5rem}
+.feat-card p{font-size:.83rem;color:var(--mist);line-height:1.65}
+
+/* PRICING */
+.pricing-bg{background:var(--ink2);padding:5rem 2rem}
+.price-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:1.25rem;max-width:1100px;margin:3rem auto 0}
+.price-card{
+  background:var(--ink);border:1px solid var(--line);border-radius:var(--r);
+  padding:2rem;position:relative;transition:all .2s;
+}
+.price-card:hover{border-color:var(--line2);transform:translateY(-3px);box-shadow:0 8px 30px rgba(0,0,0,.4)}
+.price-card.best{border-color:var(--em);background:linear-gradient(135deg,var(--ink),rgba(0,201,167,.05))}
+.price-badge{
+  position:absolute;top:-12px;left:50%;transform:translateX(-50%);
+  background:linear-gradient(135deg,var(--em),#0097ff);color:#0d1117;
+  font-size:.7rem;font-weight:700;padding:3px 14px;border-radius:50px;white-space:nowrap;
+}
+.price-tier{font-size:.73rem;text-transform:uppercase;letter-spacing:.12em;color:var(--ghost);font-weight:600;margin-bottom:.6rem}
+.price-val{margin:.75rem 0 1.25rem}
+.price-val .amt{font-family:'Cormorant Garamond',serif;font-size:2.8rem;font-weight:700;color:var(--em2)}
+.price-val .per{font-size:.85rem;color:var(--ghost)}
+.price-feats{list-style:none;display:flex;flex-direction:column;gap:.55rem;margin-bottom:1.5rem}
+.price-feats li{font-size:.84rem;display:flex;align-items:center;gap:8px}
+.price-feats li::before{content:'✓';color:var(--ok);font-weight:700;flex-shrink:0}
+.price-feats li.no::before{content:'×';color:var(--ghost)}
+.price-feats li.no{color:var(--ghost)}
+
+/* AUTH */
+#auth{align-items:center;justify-content:center;background:var(--ink)}
+.auth-card{
+  background:var(--ink2);border:1px solid var(--line);border-radius:var(--r);
+  padding:2.5rem;width:100%;max-width:420px;margin:2rem;
+  box-shadow:0 20px 60px rgba(0,0,0,.5);
+}
+.auth-tabs{display:flex;background:var(--ink3);border-radius:var(--r-s);padding:4px;margin-bottom:2rem}
+.auth-tab{flex:1;padding:.5rem;text-align:center;border-radius:6px;cursor:pointer;font-size:.85rem;font-weight:500;transition:all .2s;color:var(--mist)}
+.auth-tab.active{background:var(--ink2);color:var(--snow);box-shadow:0 1px 4px rgba(0,0,0,.3)}
+.field{margin-bottom:1.1rem}
+.field label{display:block;font-size:.73rem;font-weight:600;color:var(--mist);margin-bottom:.35rem;text-transform:uppercase;letter-spacing:.06em}
+.field input,.field select{
+  width:100%;padding:.65rem 1rem;border-radius:var(--r-s);
+  background:var(--ink3);border:1px solid var(--line);color:var(--snow);
+  font-family:'Outfit',sans-serif;font-size:.875rem;outline:none;transition:border-color .2s;
+}
+.field input:focus,.field select:focus{border-color:var(--em)}
+.auth-foot{text-align:center;font-size:.78rem;color:var(--ghost);margin-top:1rem}
+.auth-foot a{color:var(--em2);cursor:pointer}
+
+/* APP SHELL */
+#app{flex-direction:row}
+.sidebar{
+  width:258px;background:var(--ink2);border-right:1px solid var(--line);
+  display:flex;flex-direction:column;height:100vh;position:sticky;top:0;flex-shrink:0;overflow-y:auto;
+}
+.sb-head{padding:1.25rem;border-bottom:1px solid var(--line)}
+.sb-user{display:flex;align-items:center;gap:10px}
+.sb-avatar{
+  width:38px;height:38px;border-radius:50%;
+  background:linear-gradient(135deg,var(--em),#0097ff);
+  display:flex;align-items:center;justify-content:center;
+  font-weight:700;font-size:13px;color:#0d1117;flex-shrink:0;
+}
+.sb-name{font-size:.875rem;font-weight:600}
+.sb-plan{font-size:.72rem;color:var(--em2)}
+.sb-nav{padding:.75rem;display:flex;flex-direction:column;gap:2px}
+.sb-sec{font-size:.66rem;text-transform:uppercase;letter-spacing:.12em;color:var(--ghost);padding:.75rem .75rem .2rem;font-weight:600}
+.ni{
+  display:flex;align-items:center;gap:10px;padding:.58rem .75rem;
+  border-radius:var(--r-s);cursor:pointer;font-size:.83rem;color:var(--mist);
+  transition:all .15s;
+}
+.ni:hover{background:var(--ink3);color:var(--snow)}
+.ni.active{background:var(--em-d);color:var(--em2)}
+.ni .ico{width:20px;text-align:center;font-size:.8rem;flex-shrink:0;font-family:'Cormorant Garamond',serif;font-weight:700;font-size:.95rem}
+.sb-foot{padding:.75rem;border-top:1px solid var(--line);margin-top:auto}
+.usage-wrap{padding:.75rem;background:var(--ink3);border-radius:var(--r-s)}
+.usage-row{display:flex;justify-content:space-between;font-size:.75rem;color:var(--mist);margin-bottom:6px}
+.usage-track{height:4px;background:var(--line);border-radius:2px}
+.usage-bar{height:100%;border-radius:2px;background:linear-gradient(90deg,var(--em),#0097ff);transition:width .3s}
+
+/* CHAT */
+.chat-wrap{flex:1;display:flex;flex-direction:column;height:100vh;overflow:hidden;min-width:0}
+.chat-top{
+  padding:.875rem 1.5rem;border-bottom:1px solid var(--line);
+  display:flex;align-items:center;justify-content:space-between;
+  background:var(--ink2);flex-shrink:0;gap:1rem;flex-wrap:wrap;
+}
+.chat-top-left h2{font-family:'Outfit',sans-serif;font-size:.95rem;font-weight:600}
+.chat-top-left p{font-size:.76rem;color:var(--mist);margin-top:2px}
+.new-btn{
+  background:var(--em-d);border:1px solid rgba(0,201,167,.3);color:var(--em2);
+  border-radius:var(--r-s);padding:.42rem .9rem;font-size:.78rem;font-weight:600;
+  cursor:pointer;white-space:nowrap;transition:all .15s;font-family:'Outfit',sans-serif;
+}
+.new-btn:hover{background:rgba(0,201,167,.2)}
+.chips{display:flex;gap:5px;flex-wrap:wrap}
+.chip{
+  padding:3px 10px;border-radius:50px;font-size:.72rem;cursor:pointer;
+  background:var(--ink3);border:1px solid var(--line);color:var(--mist);
+  transition:all .15s;font-weight:500;white-space:nowrap;
+}
+.chip:hover,.chip.active{background:var(--em-d);border-color:var(--em);color:var(--em2)}
+.msgs{flex:1;overflow-y:auto;padding:1.25rem;display:flex;flex-direction:column;gap:1rem}
+.msg{display:flex;gap:10px;max-width:840px;animation:fadeUp .25s ease}
+@keyframes fadeUp{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+.msg.u{flex-direction:row-reverse;margin-left:auto}
+.msg-av{
+  width:30px;height:30px;border-radius:50%;flex-shrink:0;
+  display:flex;align-items:center;justify-content:center;font-size:.68rem;font-weight:700;
+}
+.msg-av.ai{background:linear-gradient(135deg,var(--em),#0097ff);color:#0d1117}
+.msg-av.u{background:var(--ink4);color:var(--mist)}
+.msg-bub{
+  background:var(--ink2);border:1px solid var(--line);border-radius:14px;
+  padding:.875rem 1rem;font-size:.875rem;line-height:1.72;max-width:100%;
+}
+.msg.u .msg-bub{background:var(--em-d);border-color:rgba(0,201,167,.18);border-radius:14px 4px 14px 14px}
+.msg:not(.u) .msg-bub{border-radius:4px 14px 14px 14px}
+.msg-bub strong{color:var(--em2)}
+.msg-bub code{background:var(--ink3);padding:2px 6px;border-radius:5px;font-size:.78rem;font-family:'Courier New',monospace;color:var(--sky)}
+.msg-bub pre{background:var(--ink);border:1px solid var(--line);border-radius:10px;padding:1rem;margin:.75rem 0;overflow-x:auto;font-size:.79rem;line-height:1.6}
+.msg-bub ul,.msg-bub ol{padding-left:1.25rem;margin:.5rem 0}
+.msg-bub li{margin-bottom:.3rem}
+.typing-dots{display:flex;align-items:center;gap:5px;padding:.4rem 0}
+.dot{width:7px;height:7px;background:var(--em2);border-radius:50%;animation:bob 1.4s ease-in-out infinite;opacity:.7}
+.dot:nth-child(2){animation-delay:.22s}
+.dot:nth-child(3){animation-delay:.44s}
+@keyframes bob{0%,60%,100%{transform:translateY(0)}30%{transform:translateY(-8px)}}
+.input-zone{padding:1rem 1.25rem;border-top:1px solid var(--line);background:var(--ink2);flex-shrink:0}
+.input-box{
+  display:flex;gap:10px;align-items:flex-end;
+  background:var(--ink3);border:1px solid var(--line);border-radius:var(--r);
+  padding:.7rem 1rem;transition:border-color .2s;
+}
+.input-box:focus-within{border-color:var(--em)}
+#chat-input{
+  flex:1;background:none;border:none;outline:none;color:var(--snow);
+  font-family:'Outfit',sans-serif;font-size:.875rem;resize:none;line-height:1.5;max-height:120px;overflow-y:auto;
+}
+#chat-input::placeholder{color:var(--ghost)}
+.attach-btn{background:none;border:none;color:var(--ghost);cursor:pointer;font-size:1rem;padding:4px;border-radius:6px;transition:color .15s;font-family:'Outfit',sans-serif}
+.attach-btn:hover{color:var(--em2)}
+.send-btn{
+  background:linear-gradient(135deg,var(--em),#0097ff);color:#0d1117;
+  border:none;border-radius:9px;width:36px;height:36px;cursor:pointer;
+  display:flex;align-items:center;justify-content:center;transition:all .2s;font-size:.9rem;
+}
+.send-btn:hover{transform:scale(1.07);box-shadow:0 3px 14px rgba(0,201,167,.35)}
+.send-btn:disabled{opacity:.35;cursor:not-allowed;transform:none}
+.input-meta{display:flex;justify-content:space-between;font-size:.72rem;color:var(--ghost);margin-top:.4rem}
+#file-input{display:none}
+
+/* ADMIN */
+#admin-panel{background:var(--ink)}
+.admin-bar{
+  background:var(--ink2);border-bottom:1px solid var(--line);padding:1rem 2rem;
+  display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:10;
+}
+.admin-body{padding:2rem;max-width:1200px;margin:0 auto}
+.kpi-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:1rem;margin-bottom:2rem}
+.kpi{background:var(--ink2);border:1px solid var(--line);border-radius:var(--r);padding:1.5rem;position:relative;overflow:hidden}
+.kpi::after{content:'';position:absolute;bottom:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--em),#0097ff)}
+.kpi .k-lbl{font-size:.76rem;color:var(--mist);margin-bottom:.4rem;font-weight:500}
+.kpi .k-val{font-family:'Cormorant Garamond',serif;font-size:2.2rem;font-weight:700;color:var(--em2)}
+.a-table{width:100%;border-collapse:collapse}
+.a-table th{text-align:left;font-size:.72rem;text-transform:uppercase;letter-spacing:.06em;color:var(--ghost);padding:.75rem 1rem;border-bottom:1px solid var(--line);font-weight:600}
+.a-table td{padding:.85rem 1rem;border-bottom:1px solid var(--line);font-size:.83rem}
+.a-table tr:hover td{background:var(--ink2)}
+.badge{display:inline-block;padding:2px 10px;border-radius:50px;font-size:.72rem;font-weight:600}
+.b-em{background:var(--em-d);color:var(--em2)}
+.b-gr{background:var(--ink3);color:var(--ghost)}
+.b-ok{background:var(--ok-d);color:var(--ok)}
+.b-red{background:var(--danger-d);color:var(--danger)}
+
+/* MODAL */
+.overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.82);z-index:1000;align-items:center;justify-content:center}
+.overlay.open{display:flex}
+.modal{background:var(--ink2);border:1px solid var(--line);border-radius:var(--r);padding:2rem;width:100%;max-width:480px;margin:1rem;box-shadow:0 20px 60px rgba(0,0,0,.6)}
+.modal h2{font-size:1.5rem;margin-bottom:1.5rem}
+.pay-info{background:var(--ink3);border:1px solid var(--line);border-radius:var(--r-s);padding:1.1rem;margin-bottom:1.25rem;font-size:.875rem;line-height:1.95}
+.pay-info strong{color:var(--em2)}
+.modal-btns{display:flex;gap:1rem;justify-content:flex-end;margin-top:1.5rem}
+.plan-opts{display:grid;grid-template-columns:repeat(3,1fr);gap:.75rem;margin-bottom:1.5rem}
+.popt{border:1px solid var(--line);border-radius:var(--r-s);padding:1rem;cursor:pointer;text-align:center;transition:all .15s}
+.popt:hover,.popt.sel{border-color:var(--em);background:var(--em-d)}
+.popt .pn{font-size:.76rem;color:var(--mist);margin-bottom:4px;font-weight:500}
+.popt .pp{font-size:1.1rem;font-weight:700;color:var(--em2)}
+
+/* TOAST */
+.toast{position:fixed;bottom:2rem;right:2rem;background:var(--ink3);border:1px solid var(--line);border-radius:var(--r-s);padding:.875rem 1.25rem;font-size:.85rem;z-index:9999;transform:translateY(120px);opacity:0;transition:all .3s;max-width:320px}
+.toast.on{transform:translateY(0);opacity:1}
+
+/* MOBILE */
+@media(max-width:768px){
+  #app{flex-direction:column}
+  .sidebar{width:100%;height:auto;position:relative;flex-direction:column}
+  .sb-nav{display:none}
+  .sb-foot{display:none}
+  .sidebar.mob-open .sb-nav{display:flex}
+  .sidebar.mob-open .sb-foot{display:block}
+  .chat-wrap{height:calc(100vh - 80px)}
+  .topbar{padding:.75rem 1rem}
+  .hero h1{font-size:2rem}
+  .hero-nums{grid-template-columns:repeat(2,1fr)}
+  .hero-num:nth-child(2){border-right:none}
+  .chips{display:none}
+  .admin-body{padding:1rem}
+  .kpi-grid{grid-template-columns:repeat(2,1fr)}
+}
+::-webkit-scrollbar{width:5px}
+::-webkit-scrollbar-track{background:transparent}
+::-webkit-scrollbar-thumb{background:var(--line2);border-radius:3px}
+</style>
+</head>
+<body>
+
+<!-- ══ LANDING ══ -->
+<div class="screen active" id="landing">
+  <nav class="topbar">
+    <div class="brand" onclick="showScreen('landing')">
+      <div class="brand-mark">SC</div>
+      <span class="brand-name">SCEG Wiki</span>
+    </div>
+    <div class="topbar-links">
+      <button class="btn btn-ghost" onclick="showScreen('auth')">Se connecter</button>
+      <button class="btn btn-em" onclick="openSignup()">Commencer</button>
+    </div>
+  </nav>
+
+  <div class="hero-wrap">
+    <!-- Photo mosaic background -->
+    <div class="hero-photos">
+      <div class="hero-photo hp1"></div>
+      <div class="hero-photo hp2"></div>
+      <div class="hero-photo hp3"></div>
+      <div class="hero-photo hp4"></div>
+      <div class="hero-photo hp5"></div>
+      <div class="hero-photo hp6"></div>
+      <div class="hero-photo hp7"></div>
+      <div class="hero-photo hp8"></div>
+      <div class="hero-photo hp9"></div>
+      <div class="hero-photo hp10"></div>
+      <div class="hero-photo hp11"></div>
+      <div class="hero-photo hp12"></div>
+    </div>
+    <div class="hero-overlay"></div>
+
+    <div class="hero-body">
+      <div class="hero-tag"><span class="dot"></span>Assistant IA — Sciences Commerciales, Économiques et de Gestion</div>
+      <h1 class="hero">Votre assistant académique <em>intelligent</em> est là</h1>
+      <p class="hero-sub">Posez vos questions sur l'Algèbre, l'Analyse, les Statistiques, la Micro et Macroéconomie, Python, Excel et toutes les spécialités du Master.</p>
+      <div class="hero-cta">
+        <button class="btn btn-em" onclick="openSignup()">Accès gratuit</button>
+        <button class="btn btn-ghost" onclick="scrollToPricing()">Voir les offres Premium</button>
+      </div>
+    </div>
+
+    <div class="hero-nums">
+      <div class="hero-num"><div class="n">7+</div><div class="l">Spécialités</div></div>
+      <div class="hero-num"><div class="n">Gemini 2.0</div><div class="l">Intelligence IA</div></div>
+      <div class="hero-num"><div class="n">24/7</div><div class="l">Disponible</div></div>
+      <div class="hero-num"><div class="n">100%</div><div class="l">Spécialisé SCEG</div></div>
+    </div>
+  </div>
+
+  <!-- FEATURES -->
+  <div class="section">
+    <div class="section-head">
+      <div class="tag-line">Ce que nous couvrons</div>
+      <h2>Tout le programme SCEG</h2>
+      <p>Conçu spécialement pour les étudiants algériens du programme SCEG</p>
+    </div>
+    <div class="feat-grid">
+      <div class="feat-card">
+        <div class="feat-letter" style="background:linear-gradient(135deg,var(--em),#0097ff)">M</div>
+        <h3>Mathématiques</h3>
+        <p>Algèbre linéaire, Analyse, Séries, Intégrales, Équations différentielles. Résolution étape par étape.</p>
+      </div>
+      <div class="feat-card">
+        <div class="feat-letter" style="background:linear-gradient(135deg,#a855f7,#ec4899)">S</div>
+        <h3>Stats et Probabilités</h3>
+        <p>Lois de distribution, Tests d'hypothèses, Régression, Statistiques descriptives et inférentielles.</p>
+      </div>
+      <div class="feat-card">
+        <div class="feat-letter" style="background:linear-gradient(135deg,var(--warm),#ef4444)">E</div>
+        <h3>Économie</h3>
+        <p>Microéconomie, Macroéconomie, Théories économiques avec exemples du contexte algérien.</p>
+      </div>
+      <div class="feat-card">
+        <div class="feat-letter" style="background:linear-gradient(135deg,#0ea5e9,#6366f1)">P</div>
+        <h3>Python et Excel</h3>
+        <p>Code Python commenté, pandas, numpy, matplotlib. Formules Excel avancées, tableaux croisés.</p>
+      </div>
+      <div class="feat-card">
+        <div class="feat-letter" style="background:linear-gradient(135deg,var(--ok),var(--em))">G</div>
+        <h3>Gestion et Finance</h3>
+        <p>Comptabilité, Finance, Management, RH, Marketing, Commerce International, Monnaie.</p>
+      </div>
+      <div class="feat-card">
+        <div class="feat-letter" style="background:linear-gradient(135deg,#f59e0b,var(--warm))">F</div>
+        <h3>Fichiers joints</h3>
+        <p>Importez vos exercices en PDF ou image et obtenez une aide directe sur votre contenu.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- PRICING -->
+  <div class="pricing-bg" id="pricing">
+    <div class="section-head">
+      <div class="tag-line">Tarifs</div>
+      <h2>Choisissez votre formule</h2>
+      <p>Commencez gratuitement, passez Premium via CCP</p>
+    </div>
+    <div class="price-grid">
+      <div class="price-card">
+        <div class="price-tier">Gratuit</div>
+        <div class="price-val"><span class="amt">0</span> <span class="per">DA</span></div>
+        <ul class="price-feats">
+          <li>3 questions par jour</li>
+          <li>2 imports de fichiers par jour</li>
+          <li>Toutes les matières SCEG</li>
+          <li class="no">Questions illimitées</li>
+          <li class="no">Réponses prioritaires</li>
+        </ul>
+        <button class="btn btn-line btn-full" onclick="openSignup()">Commencer gratuitement</button>
+      </div>
+      <div class="price-card best">
+        <div class="price-badge">Populaire</div>
+        <div class="price-tier">Hebdomadaire</div>
+        <div class="price-val"><span class="amt">550</span> <span class="per">DA / semaine</span></div>
+        <ul class="price-feats">
+          <li>Questions illimitées</li>
+          <li>Imports illimités</li>
+          <li>Toutes les matières SCEG</li>
+          <li>Réponses prioritaires</li>
+          <li>Historique sauvegardé</li>
+        </ul>
+        <button class="btn btn-em btn-full" onclick="openPayment('weekly')">Payer par CCP</button>
+      </div>
+      <div class="price-card">
+        <div class="price-tier">Mensuel</div>
+        <div class="price-val"><span class="amt">1100</span> <span class="per">DA / mois</span></div>
+        <ul class="price-feats">
+          <li>Questions illimitées</li>
+          <li>Imports illimités</li>
+          <li>Toutes les matières SCEG</li>
+          <li>Réponses prioritaires</li>
+          <li>Meilleur rapport qualité/prix</li>
+        </ul>
+        <button class="btn btn-line btn-full" onclick="openPayment('monthly')">Payer par CCP</button>
+      </div>
+      <div class="price-card" style="grid-column:1/-1;max-width:300px;margin:0 auto">
+        <div class="price-tier">Journalier</div>
+        <div class="price-val"><span class="amt">100</span> <span class="per">DA / jour</span></div>
+        <ul class="price-feats">
+          <li>Questions illimitées 24h</li>
+          <li>Imports illimités</li>
+        </ul>
+        <button class="btn btn-line btn-full" onclick="openPayment('daily')">Payer 100 DA</button>
+      </div>
+    </div>
+  </div>
+
+  <footer style="text-align:center;padding:1.5rem;border-top:1px solid var(--line);font-size:.76rem;color:var(--ghost)">
+    © 2024 SCEG Wiki · Contact : heebuchhhmoh@icloud.com
+  </footer>
+</div>
+
+<!-- ══ AUTH ══ -->
+<div class="screen" id="auth">
+  <div style="flex:1;display:flex;align-items:center;justify-content:center;padding:2rem">
+    <div class="auth-card">
+      <div style="text-align:center;margin-bottom:2rem">
+        <div class="brand" style="justify-content:center;margin-bottom:.25rem" onclick="showScreen('landing')">
+          <div class="brand-mark">SC</div>
+          <span class="brand-name">SCEG Wiki</span>
+        </div>
+      </div>
+      <div class="auth-tabs">
+        <div class="auth-tab active" id="tab-login" onclick="switchTab('login')">Se connecter</div>
+        <div class="auth-tab" id="tab-register" onclick="switchTab('register')">S'inscrire</div>
+      </div>
+      <div id="login-form">
+        <div class="field"><label>Email</label><input type="email" id="login-email" placeholder="votre@email.com"></div>
+        <div class="field"><label>Mot de passe</label><input type="password" id="login-pass" placeholder="••••••••" onkeydown="if(event.key==='Enter')doLogin()"></div>
+        <button class="btn btn-em btn-full" onclick="doLogin()">Se connecter</button>
+      </div>
+      <div id="register-form" style="display:none">
+        <div class="field"><label>Nom complet</label><input type="text" id="reg-name" placeholder="Prénom Nom"></div>
+        <div class="field"><label>Email</label><input type="email" id="reg-email" placeholder="votre@email.com"></div>
+        <div class="field">
+          <label>Spécialité</label>
+          <select id="reg-spec">
+            <option value="">Préparatoire</option>
+            <option>Finance et Comptabilité</option>
+            <option>Management des Entreprises</option>
+            <option>Commerce International</option>
+            <option>Ressources Humaines</option>
+            <option>Marketing</option>
+            <option>Monnaie et Finance</option>
+          </select>
+        </div>
+        <div class="field"><label>Mot de passe</label><input type="password" id="reg-pass" placeholder="Minimum 8 caractères"></div>
+        <button class="btn btn-em btn-full" onclick="doRegister()">Créer mon compte</button>
+      </div>
+      <p class="auth-foot"><a onclick="showScreen('landing')">Retour à l'accueil</a></p>
+    </div>
+  </div>
+</div>
+
+<!-- ══ APP ══ -->
+<div class="screen" id="app">
+  <div class="sidebar" id="sidebar">
+    <div class="sb-head" onclick="document.getElementById('sidebar').classList.toggle('mob-open')" style="cursor:pointer">
+      <div class="sb-user">
+        <div class="sb-avatar" id="side-avatar">ET</div>
+        <div>
+          <div class="sb-name" id="side-name">Étudiant</div>
+          <div class="sb-plan" id="side-plan">Plan Gratuit</div>
+        </div>
+      </div>
+    </div>
+    <div class="sb-nav">
+      <div class="ni active" onclick="newConversation()"><span class="ico">+</span> Nouvelle conversation</div>
+      <div class="sb-sec">Matières</div>
+      <div class="ni" onclick="setSubject('Mathématiques')"><span class="ico">M</span> Mathématiques</div>
+      <div class="ni" onclick="setSubject('Statistiques')"><span class="ico">S</span> Stats et Proba</div>
+      <div class="ni" onclick="setSubject('Microéconomie')"><span class="ico">Mi</span> Microéconomie</div>
+      <div class="ni" onclick="setSubject('Macroéconomie')"><span class="ico">Ma</span> Macroéconomie</div>
+      <div class="ni" onclick="setSubject('Python')"><span class="ico">Py</span> Python</div>
+      <div class="ni" onclick="setSubject('Excel')"><span class="ico">Ex</span> Excel</div>
+      <div class="ni" onclick="setSubject('Comptabilité')"><span class="ico">C</span> Comptabilité</div>
+      <div class="ni" onclick="setSubject('Management')"><span class="ico">Mg</span> Management</div>
+      <div class="ni" onclick="setSubject('Finance')"><span class="ico">Fi</span> Finance</div>
+      <div class="ni" onclick="setSubject('Marketing')"><span class="ico">Mk</span> Marketing</div>
+      <div class="sb-sec">Compte</div>
+      <div class="ni" onclick="openPayment('weekly')"><span class="ico">*</span> Passer Premium</div>
+      <div class="ni" onclick="document.getElementById('receipt-modal').classList.add('open')"><span class="ico">R</span> Envoyer un reçu</div>
+      <div class="ni" onclick="doLogout()"><span class="ico">←</span> Déconnexion</div>
+    </div>
+    <div class="sb-foot">
+      <div class="usage-wrap" id="usage-display">
+        <div class="usage-row"><span>Questions aujourd'hui</span><span id="usage-count">0/3</span></div>
+        <div class="usage-track"><div class="usage-bar" id="usage-bar" style="width:0%"></div></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="chat-wrap">
+    <div class="chat-top">
+      <div class="chat-top-left">
+        <h2 id="chat-title">Assistant SCEG</h2>
+        <p id="chat-subtitle">Posez vos questions académiques</p>
+      </div>
+      <button class="new-btn" onclick="newConversation()">+ Nouvelle conversation</button>
+      <div class="chips">
+        <span class="chip active" onclick="setSubject('Général')">Général</span>
+        <span class="chip" onclick="setSubject('Algèbre')">Algèbre</span>
+        <span class="chip" onclick="setSubject('Analyse')">Analyse</span>
+        <span class="chip" onclick="setSubject('Probabilités')">Probas</span>
+        <span class="chip" onclick="setSubject('Python')">Python</span>
+      </div>
+    </div>
+    <div class="msgs" id="messages"></div>
+    <div class="input-zone">
+      <div class="input-box">
+        <textarea id="chat-input" rows="1" placeholder="Posez votre question..." onkeydown="handleKey(event)" oninput="autoResize(this)"></textarea>
+        <div style="display:flex;gap:8px;align-items:center">
+          <label class="attach-btn" title="Joindre un fichier">
+            [+]<input type="file" id="file-input" accept=".pdf,.png,.jpg,.jpeg,.txt" onchange="handleFile(this)">
+          </label>
+          <button class="send-btn" id="send-btn" onclick="sendMsg()">&#9658;</button>
+        </div>
+      </div>
+      <div class="input-meta">
+        <span id="file-name" style="color:var(--em2)"></span>
+        <span id="limit-info"></span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ ADMIN ══ -->
+<div class="screen" id="admin-panel">
+  <div class="admin-bar">
+    <div style="display:flex;align-items:center;gap:12px">
+      <div class="brand-mark">SC</div>
+      <span style="font-family:'Cormorant Garamond',serif;font-size:1.15rem;font-weight:600">SCEG Wiki — Administration</span>
+    </div>
+    <div style="display:flex;gap:10px;align-items:center">
+      <span style="font-size:.78rem;color:var(--mist)">heebuchhhmoh@icloud.com</span>
+      <button class="btn btn-ghost" onclick="doLogout()">Déconnexion</button>
+    </div>
+  </div>
+  <div class="admin-body">
+    <div style="margin-bottom:1.5rem">
+      <h2 style="font-size:1.75rem;margin-bottom:.25rem">Tableau de bord</h2>
+      <p style="color:var(--mist);font-size:.875rem">Gestion des utilisateurs et abonnements</p>
+    </div>
+    <div class="kpi-grid" id="admin-stats"></div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:1.5rem;margin-bottom:2rem">
+      <div style="background:var(--ink2);border:1px solid var(--line);border-radius:var(--r);padding:1.5rem">
+        <h3 style="font-family:'Outfit',sans-serif;font-size:.95rem;font-weight:600;margin-bottom:1rem">Paiements en attente</h3>
+        <div id="pending-payments"></div>
+      </div>
+      <div style="background:var(--ink2);border:1px solid var(--line);border-radius:var(--r);padding:1.5rem">
+        <h3 style="font-family:'Outfit',sans-serif;font-size:.95rem;font-weight:600;margin-bottom:1rem">Configuration OpenRouter (clé sk-or-...)</h3>
+        <div style="display:flex;flex-direction:column;gap:.75rem">
+          <div style="background:var(--ink3);border-radius:var(--r-s);padding:.875rem;border:1px solid var(--line)">
+            <div style="font-size:.73rem;color:var(--mist);margin-bottom:6px;font-weight:600;text-transform:uppercase;letter-spacing:.06em">Clé API OpenRouter</div>
+            <div style="display:flex;gap:8px">
+              <input type="password" id="gemini-key-input" placeholder="sk-or-..." style="flex:1;padding:6px 10px;background:var(--ink);border:1px solid var(--line);border-radius:6px;color:var(--snow);font-size:.8rem;outline:none;font-family:'Outfit',sans-serif">
+              <button class="btn btn-em" style="padding:6px 12px;font-size:.8rem" onclick="saveGeminiKey()">Enregistrer</button>
+            </div>
+            <div id="apikey-status" style="font-size:.73rem;margin-top:6px;color:var(--ghost)">Non configurée</div>
+          </div>
+          <button class="btn btn-line" onclick="exportUsers()" style="text-align:left">Exporter les utilisateurs CSV</button>
+          <button class="btn btn-line" onclick="clearOldData()">Nettoyer les anciennes données</button>
+        </div>
+      </div>
+    </div>
+    <div style="background:var(--ink2);border:1px solid var(--line);border-radius:var(--r);padding:1.5rem">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:1rem;flex-wrap:wrap;gap:.75rem">
+        <h3 style="font-family:'Outfit',sans-serif;font-size:.95rem;font-weight:600">Utilisateurs inscrits</h3>
+        <input placeholder="Rechercher..." style="padding:6px 12px;background:var(--ink3);border:1px solid var(--line);border-radius:var(--r-s);color:var(--snow);font-size:.8rem;outline:none;font-family:'Outfit',sans-serif" oninput="filterUsers(this.value)">
+      </div>
+      <div style="overflow-x:auto"><table class="a-table" id="users-table"></table></div>
+    </div>
+  </div>
+</div>
+
+<!-- PAYMENT MODAL -->
+<div class="overlay" id="payment-modal">
+  <div class="modal">
+    <h2>Paiement CCP</h2>
+    <p style="color:var(--mist);font-size:.875rem;margin-bottom:1.25rem">Choisissez votre formule :</p>
+    <div class="plan-opts">
+      <div class="popt sel" id="opt-daily" onclick="selectPlan('daily')"><div class="pn">1 Jour</div><div class="pp">100 DA</div></div>
+      <div class="popt" id="opt-weekly" onclick="selectPlan('weekly')"><div class="pn">1 Semaine</div><div class="pp">550 DA</div></div>
+      <div class="popt" id="opt-monthly" onclick="selectPlan('monthly')"><div class="pn">1 Mois</div><div class="pp">1100 DA</div></div>
+    </div>
+    <div class="pay-info">
+      <div style="font-weight:600;color:var(--em2);margin-bottom:.75rem">Instructions de paiement CCP :</div>
+      <div>Numéro de compte : <strong>00799999004453951340</strong></div>
+      <div>Clé : <strong>40</strong></div>
+      <div style="margin-top:.75rem;font-size:.8rem;color:var(--mist)">Après le virement, envoyez le reçu à <strong>heebuchhhmoh@icloud.com</strong> avec votre email. Activation sous 24h.</div>
+    </div>
+    <div class="modal-btns">
+      <button class="btn btn-ghost" onclick="closeModal('payment-modal')">Fermer</button>
+      <button class="btn btn-em" onclick="confirmPayment()">Envoyer mon reçu</button>
+    </div>
+  </div>
+</div>
+
+<!-- RECEIPT MODAL -->
+<div class="overlay" id="receipt-modal">
+  <div class="modal">
+    <h2>Envoyer mon reçu CCP</h2>
+    <p style="color:var(--mist);font-size:.875rem;margin-bottom:1.5rem">Remplissez ce formulaire après avoir effectué le virement. L'admin activera votre compte sous 24h.</p>
+    <div class="field"><label>Votre nom complet</label><input type="text" id="rec-name" placeholder="Prénom Nom"></div>
+    <div class="field"><label>Votre email inscrit</label><input type="email" id="rec-email" placeholder="votre@email.com"></div>
+    <div class="field">
+      <label>Formule payée</label>
+      <select id="rec-plan" style="width:100%;padding:.65rem 1rem;border-radius:var(--r-s);background:var(--ink3);border:1px solid var(--line);color:var(--snow);font-family:'Outfit',sans-serif;font-size:.875rem;outline:none">
+        <option value="daily">1 Jour — 100 DA</option>
+        <option value="weekly">1 Semaine — 550 DA</option>
+        <option value="monthly">1 Mois — 1100 DA</option>
+      </select>
+    </div>
+    <div class="field">
+      <label>Photo du reçu</label>
+      <label style="display:flex;align-items:center;gap:10px;padding:.65rem 1rem;background:var(--ink3);border:1px solid var(--line);border-radius:var(--r-s);cursor:pointer">
+        <span id="rec-file-name" style="font-size:.85rem;color:var(--mist)">Cliquez pour joindre une photo...</span>
+        <input type="file" id="rec-file" accept=".jpg,.jpeg,.png,.pdf" style="display:none" onchange="document.getElementById('rec-file-name').textContent=this.files[0]?.name||'Aucun fichier'">
+      </label>
+    </div>
+    <div style="background:var(--ink3);border-radius:var(--r-s);padding:1rem;font-size:.8rem;color:var(--mist);margin-bottom:1rem;border:1px solid var(--line)">
+      Votre reçu sera envoyé à <strong style="color:var(--em2)">heebuchhhmoh@icloud.com</strong> avec toutes vos informations.
+    </div>
+    <div class="modal-btns">
+      <button class="btn btn-ghost" onclick="closeModal('receipt-modal')">Annuler</button>
+      <button class="btn btn-em" onclick="submitReceipt()">Envoyer le reçu</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+/* ══ STATE ══ */
+const DB={
+  users:JSON.parse(localStorage.getItem('sceg_users')||'[]'),
+  payments:JSON.parse(localStorage.getItem('sceg_payments')||'[]'),
+  convs:JSON.parse(localStorage.getItem('sceg_convs')||'{}')
+};
+let CU=null, selPlan='daily', subject='Général', attached=null, thinking=false;
+const ADMIN_EMAIL='heebuchhhmoh@icloud.com', ADMIN_PASS='Admin@SCEG2024';
+
+function save(){
+  localStorage.setItem('sceg_users',JSON.stringify(DB.users));
+  localStorage.setItem('sceg_payments',JSON.stringify(DB.payments));
+  localStorage.setItem('sceg_convs',JSON.stringify(DB.convs));
+}
+function showScreen(id){document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));document.getElementById(id).classList.add('active');window.scrollTo(0,0)}
+function toast(msg,col){const t=document.getElementById('toast');t.textContent=msg;t.style.borderColor=col||'var(--line2)';t.classList.add('on');setTimeout(()=>t.classList.remove('on'),3500)}
+function closeModal(id){document.getElementById(id).classList.remove('open')}
+function openSignup(){switchTab('register');showScreen('auth')}
+function scrollToPricing(){document.getElementById('pricing').scrollIntoView({behavior:'smooth'})}
+
+/* ══ AUTH ══ */
+function switchTab(tab){
+  document.getElementById('login-form').style.display=tab==='login'?'':'none';
+  document.getElementById('register-form').style.display=tab==='register'?'':'none';
+  document.getElementById('tab-login').className='auth-tab'+(tab==='login'?' active':'');
+  document.getElementById('tab-register').className='auth-tab'+(tab==='register'?' active':'');
+}
+function doLogin(){
+  const email=document.getElementById('login-email').value.trim();
+  const pass=document.getElementById('login-pass').value;
+  if(!email||!pass){toast('Remplissez email et mot de passe','var(--danger)');return}
+  if(email===ADMIN_EMAIL&&pass===ADMIN_PASS){
+    CU={name:'Administrateur',email:ADMIN_EMAIL,role:'admin'};
+    loadAdmin();showScreen('admin-panel');toast('Bienvenue Administrateur','var(--ok)');return;
+  }
+  const u=DB.users.find(u=>u.email===email&&u.password===pass);
+  if(!u){toast('Email ou mot de passe incorrect','var(--danger)');return}
+  CU=u;enterApp();
+}
+function doRegister(){
+  const name=document.getElementById('reg-name').value.trim();
+  const email=document.getElementById('reg-email').value.trim();
+  const spec=document.getElementById('reg-spec').value;
+  const pass=document.getElementById('reg-pass').value;
+  if(!name||!email||!pass){toast('Remplissez tous les champs','var(--danger)');return}
+  if(pass.length<8){toast('Mot de passe trop court (8 minimum)','var(--danger)');return}
+  if(DB.users.find(u=>u.email===email)){toast('Email déjà utilisé','var(--danger)');return}
+  const u={id:Date.now(),name,email,password:pass,speciality:spec,plan:'free',planExpiry:null,joined:new Date().toLocaleDateString('fr-FR'),questionsToday:0,uploadsToday:0,lastReset:new Date().toDateString()};
+  DB.users.push(u);save();CU=u;toast('Compte créé ! Bienvenue','var(--ok)');enterApp();
+}
+function doLogout(){CU=null;showScreen('landing')}
+
+function enterApp(){
+  resetLimits();updateSidebar();showWelcome();showScreen('app');
+}
+function resetLimits(){
+  if(!CU||CU.role==='admin')return;
+  const today=new Date().toDateString();
+  if(CU.lastReset!==today){
+    CU.questionsToday=0;CU.uploadsToday=0;CU.lastReset=today;
+    const u=DB.users.find(u=>u.id===CU.id);
+    if(u){u.questionsToday=0;u.uploadsToday=0;u.lastReset=today;}save();
+  }
+}
+function updateSidebar(){
+  if(!CU)return;
+  document.getElementById('side-name').textContent=CU.name;
+  document.getElementById('side-avatar').textContent=CU.name.slice(0,2).toUpperCase();
+  const prem=isPrem();
+  document.getElementById('side-plan').textContent=prem?'Premium actif':'Plan Gratuit';
+  const used=CU.questionsToday||0;
+  if(!prem){
+    document.getElementById('usage-count').textContent=`${used}/3`;
+    document.getElementById('usage-bar').style.width=`${(used/3)*100}%`;
+    document.getElementById('limit-info').textContent=`Plan gratuit : ${3-used} question(s) restante(s)`;
+  }else{
+    document.getElementById('usage-count').textContent='Illimité';
+    document.getElementById('usage-bar').style.width='25%';
+    document.getElementById('limit-info').textContent='Premium : questions illimitées';
+  }
+}
+function isPrem(){
+  if(!CU||CU.plan==='free')return false;
+  if(!CU.planExpiry)return false;
+  return new Date()<new Date(CU.planExpiry);
+}
+
+/* ══ CHAT ══ */
+function showWelcome(){
+  const c=document.getElementById('messages');c.innerHTML='';
+  bubble('ai',`Bonjour ${CU.name} !\n\nJe suis votre assistant SCEG Wiki, alimenté par **Gemini 2.0 Flash** via OpenRouter.\n\nJe peux vous aider en :\n• **Mathématiques** : Algèbre, Analyse, Séries, Intégrales\n• **Stats et Probabilités** : Lois, Tests, Régression\n• **Économie** : Microéconomie, Macroéconomie, Théories\n• **Informatique** : Python, Excel\n• **Spécialités Master** : Finance, Comptabilité, Management, RH, Marketing\n\nPosez votre première question !`);
+}
+function newConversation(){
+  if(!CU)return;
+  DB.convs[`u_${CU.id}`]=[];save();showWelcome();
+  document.getElementById('chat-title').textContent='Assistant SCEG';
+  document.getElementById('chat-subtitle').textContent='Nouvelle conversation';
+  toast('Nouvelle conversation démarrée');
+}
+function setSubject(s){
+  subject=s;
+  document.getElementById('chat-title').textContent=s==='Général'?'Assistant SCEG':`SCEG — ${s}`;
+  document.getElementById('chat-subtitle').textContent=`Matière : ${s}`;
+  document.querySelectorAll('.chip').forEach(c=>c.classList.remove('active'));
+}
+function handleKey(e){if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();sendMsg()}}
+function autoResize(el){el.style.height='auto';el.style.height=Math.min(el.scrollHeight,120)+'px'}
+function handleFile(input){
+  if(!CU)return;
+  if(!isPrem()&&(CU.uploadsToday||0)>=2){toast('Limite 2 fichiers/jour. Passez Premium !','var(--danger)');input.value='';return}
+  const f=input.files[0];if(!f)return;
+  attached=f;document.getElementById('file-name').textContent=`Fichier : ${f.name}`;
+  if(!isPrem()){CU.uploadsToday=(CU.uploadsToday||0)+1;const u=DB.users.find(u=>u.id===CU.id);if(u)u.uploadsToday=CU.uploadsToday;save()}
+}
+
+async function sendMsg(){
+  if(thinking)return;
+  const inp=document.getElementById('chat-input');
+  const txt=inp.value.trim();
+  if(!txt&&!attached)return;
+  if(!CU){showScreen('auth');return}
+  if(!isPrem()&&(CU.questionsToday||0)>=3){toast('Limite 3 questions/jour. Passez Premium !','var(--danger)');openPayment('weekly');return}
+
+  const apiKey=localStorage.getItem('sceg_or_key')||'';
+  if(!apiKey){toast('Clé API Gemini non configurée. Contactez l\'admin.','var(--danger)');return}
+
+  const msg=txt||(attached?`[Fichier : ${attached.name}]`:'');
+  inp.value='';inp.style.height='auto';
+  bubble('user',msg);
+
+  const key=`u_${CU.id}`;
+  if(!DB.convs[key])DB.convs[key]=[];
+  DB.convs[key].push({role:'user',content:msg,ts:Date.now()});
+
+  if(!isPrem()){
+    CU.questionsToday=(CU.questionsToday||0)+1;
+    const u=DB.users.find(u=>u.id===CU.id);if(u)u.questionsToday=CU.questionsToday;save();
+  }
+  updateSidebar();
+  const fileInfo=attached?` [Fichier joint : ${attached.name}]`:'';
+  attached=null;document.getElementById('file-name').textContent='';document.getElementById('file-input').value='';
+
+  showTyping();thinking=true;document.getElementById('send-btn').disabled=true;
+
+  try{
+    const hist=(DB.convs[key]||[]).slice(-12).map(m=>({role:m.role==='ai'?'model':'user',parts:[{text:m.content}]}));
+    const sysPrompt=buildPrompt();
+
+    const hist2=(DB.convs[key]||[]).slice(-12).map(m=>({role:m.role==='ai'?'assistant':'user',content:m.content}));
+    const body={
+      model:'deepseek/deepseek-r1:free',
+      messages:[
+        {role:'system',content:sysPrompt},
+        ...hist2,
+        {role:'user',content:msg+fileInfo}
+      ]
+    };
+    const res=await fetch('https://openrouter.ai/api/v1/chat/completions',{
+      method:'POST',
+      headers:{
+        'Content-Type':'application/json',
+        'Authorization':'Bearer '+apiKey,
+        'HTTP-Referer':'https://sceg-wiki.github.io',
+        'X-Title':'SCEG Wiki'
+      },
+      body:JSON.stringify(body)
+    });
+    const data=await res.json();
+    if(data.error)throw new Error(data.error.message||JSON.stringify(data.error));
+    const reply=data.choices?.[0]?.message?.content||'Désolé, une erreur est survenue.';
+    hideTyping();bubble('ai',reply);
+    DB.convs[key].push({role:'ai',content:reply,ts:Date.now()});
+    if(DB.convs[key].length>40)DB.convs[key]=DB.convs[key].slice(-40);
+    save();
+  }catch(err){
+    hideTyping();
+    bubble('ai',`Erreur : ${err.message}. Vérifiez la clé API Gemini dans le panel admin.`);
+  }
+  thinking=false;document.getElementById('send-btn').disabled=false;
+}
+
+function buildPrompt(){
+  const spec=CU.speciality?`, spécialité : ${CU.speciality}`:'';
+  return `Tu es SCEG Wiki, l'assistant académique intelligent spécialisé en Sciences Commerciales, Économiques et de Gestion pour les étudiants algériens.
+
+Programme :
+- Préparatoire (2 ans) : Algèbre linéaire, Analyse, Statistiques, Probabilités, Microéconomie, Macroéconomie, Python, Excel
+- Master (3 ans) : Finance et Comptabilité, Management, Commerce International, RH, Marketing, Monnaie et Finance
+
+Étudiant : ${CU.name}${spec}
+Matière : ${subject}
+
+Règles :
+1. Réponds toujours en français clair, adapté au niveau universitaire algérien
+2. Pour les maths, montre chaque étape clairement
+3. Pour Python, fournis du code propre commenté en français
+4. Pour l'économie, utilise des exemples algériens quand possible
+5. Structure tes réponses avec des titres et des listes quand utile
+6. Sois précis, complet et encourageant`;
+}
+
+function bubble(role,content,scroll=true){
+  const c=document.getElementById('messages');
+  const d=document.createElement('div');
+  d.className='msg'+(role==='user'?' u':'');
+  const init=role==='ai'?'IA':(CU?.name?.slice(0,2).toUpperCase()||'ET');
+  d.innerHTML=`<div class="msg-av ${role==='ai'?'ai':'u'}">${init}</div><div class="msg-bub">${fmt(content)}</div>`;
+  c.appendChild(d);if(scroll)c.scrollTop=c.scrollHeight;
+}
+function fmt(t){
+  return t
+    .replace(/\*\*(.+?)\*\*/g,'<strong>$1</strong>')
+    .replace(/`([^`]+)`/g,'<code>$1</code>')
+    .replace(/```[\w]*\n?([\s\S]+?)```/g,'<pre>$1</pre>')
+    .replace(/^[•\-] (.+)$/gm,'<li>$1</li>')
+    .replace(/\n\n/g,'<br><br>')
+    .replace(/\n/g,'<br>');
+}
+let typEl=null;
+function showTyping(){
+  const c=document.getElementById('messages');
+  typEl=document.createElement('div');typEl.className='msg';typEl.id='typ';
+  typEl.innerHTML=`<div class="msg-av ai">IA</div><div class="msg-bub"><div class="typing-dots"><div class="dot"></div><div class="dot"></div><div class="dot"></div></div></div>`;
+  c.appendChild(typEl);c.scrollTop=c.scrollHeight;
+}
+function hideTyping(){const t=document.getElementById('typ');if(t)t.remove()}
+
+/* ══ PAYMENTS ══ */
+function openPayment(plan){
+  selPlan=plan||'daily';
+  document.querySelectorAll('.popt').forEach(o=>o.classList.remove('sel'));
+  document.getElementById(`opt-${selPlan}`)?.classList.add('sel');
+  document.getElementById('payment-modal').classList.add('open');
+}
+function selectPlan(plan){
+  selPlan=plan;
+  document.querySelectorAll('.popt').forEach(o=>o.classList.remove('sel'));
+  document.getElementById(`opt-${plan}`).classList.add('sel');
+}
+function confirmPayment(){
+  closeModal('payment-modal');
+  // Pre-fill receipt modal with user info
+  if(CU){
+    document.getElementById('rec-name').value=CU.name||'';
+    document.getElementById('rec-email').value=CU.email||'';
+    document.getElementById('rec-plan').value=selPlan;
+  }
+  document.getElementById('receipt-modal').classList.add('open');
+}
+
+async function submitReceipt(){
+  const name=document.getElementById('rec-name').value.trim();
+  const email=document.getElementById('rec-email').value.trim();
+  const plan=document.getElementById('rec-plan').value;
+  const file=document.getElementById('rec-file').files[0];
+  if(!name||!email){toast('Remplissez votre nom et email','var(--danger)');return}
+  
+  const prices={daily:100,weekly:550,monthly:1100};
+  const labels={daily:'1 Jour — 100 DA',weekly:'1 Semaine — 550 DA',monthly:'1 Mois — 1100 DA'};
+  
+  // Save payment request in DB
+  DB.payments.push({
+    id:Date.now(),userId:CU?.id,userEmail:email,userName:name,
+    plan:plan,amount:prices[plan],label:labels[plan],
+    status:'pending',date:new Date().toLocaleDateString('fr-FR'),
+    hasReceipt:!!file
+  });
+  save();
+  
+  // Use FormSubmit to send email with receipt
+  const formData=new FormData();
+  formData.append('_to','heebuchhhmoh@icloud.com');
+  formData.append('_subject','Nouveau reçu CCP — SCEG Wiki');
+  formData.append('_template','table');
+  formData.append('Nom',name);
+  formData.append('Email',email);
+  formData.append('Formule',labels[plan]);
+  formData.append('Date',new Date().toLocaleDateString('fr-FR'));
+  if(file) formData.append('Recu',file);
+  
+  try{
+    const res=await fetch('https://formsubmit.co/ajax/heebuchhhmoh@icloud.com',{
+      method:'POST',
+      body:formData
+    });
+    const data=await res.json();
+    closeModal('receipt-modal');
+    toast('Reçu envoyé ! Votre compte sera activé sous 24h.','var(--ok)');
+    document.getElementById('rec-file').value='';
+    document.getElementById('rec-file-name').textContent='Cliquez pour joindre une photo...';
+  }catch(err){
+    closeModal('receipt-modal');
+    toast('Reçu enregistré ! Envoyez aussi une photo à heebuchhhmoh@icloud.com','var(--ok)');
+  }
+}
+
+/* ══ ADMIN ══ */
+function loadAdmin(){
+  const total=DB.users.length;
+  const prem=DB.users.filter(u=>u.plan!=='free'&&new Date()<new Date(u.planExpiry)).length;
+  const pend=DB.payments.filter(p=>p.status==='pending').length;
+  const rev=DB.payments.filter(p=>p.status==='approved').reduce((s,p)=>s+p.amount,0);
+  document.getElementById('admin-stats').innerHTML=`
+    <div class="kpi"><div class="k-lbl">Utilisateurs</div><div class="k-val">${total}</div></div>
+    <div class="kpi"><div class="k-lbl">Premium actifs</div><div class="k-val">${prem}</div></div>
+    <div class="kpi"><div class="k-lbl">Paiements en attente</div><div class="k-val">${pend}</div></div>
+    <div class="kpi"><div class="k-lbl">Revenus confirmés</div><div class="k-val">${rev} DA</div></div>`;
+  const pp=DB.payments.filter(p=>p.status==='pending');
+  document.getElementById('pending-payments').innerHTML=pp.length===0
+    ?'<p style="color:var(--ghost);font-size:.875rem">Aucun paiement en attente</p>'
+    :pp.map(p=>`<div style="background:var(--ink3);border-radius:var(--r-s);padding:.75rem;margin-bottom:.5rem;font-size:.8rem">
+      <div><strong>${p.userName}</strong> — ${p.amount} DA (${p.label})</div>
+      <div style="color:var(--ghost);margin-bottom:6px">${p.userEmail} · ${p.date}</div>
+      <div style="display:flex;gap:6px">
+        <button onclick="approvePayment(${p.id})" style="background:var(--ok-d);border:1px solid rgba(34,211,160,.2);color:var(--ok);padding:4px 10px;border-radius:6px;cursor:pointer;font-size:.74rem;font-family:'Outfit',sans-serif">Approuver</button>
+        <button onclick="rejectPayment(${p.id})" style="background:var(--danger-d);border:1px solid rgba(255,107,107,.2);color:var(--danger);padding:4px 10px;border-radius:6px;cursor:pointer;font-size:.74rem;font-family:'Outfit',sans-serif">Rejeter</button>
+      </div></div>`).join('');
+  renderTable(DB.users);
+  setTimeout(()=>{
+    const ex=localStorage.getItem('sceg_or_key');
+    const inp=document.getElementById('gemini-key-input');
+    const st=document.getElementById('apikey-status');
+    if(inp&&ex){inp.value=ex;st.textContent='Clé configurée et active';st.style.color='var(--ok)';}
+  },50);
+}
+function renderTable(users){
+  const ip=u=>u.plan!=='free'&&u.planExpiry&&new Date()<new Date(u.planExpiry);
+  document.getElementById('users-table').innerHTML=`
+    <thead><tr><th>Nom</th><th>Email</th><th>Spécialité</th><th>Plan</th><th>Q/Jour</th><th>Inscrit</th><th>Actions</th></tr></thead>
+    <tbody>${users.map(u=>`<tr>
+      <td>${u.name}</td><td style="color:var(--mist)">${u.email}</td>
+      <td style="color:var(--mist)">${u.speciality||'—'}</td>
+      <td><span class="badge ${ip(u)?'b-em':'b-gr'}">${ip(u)?u.plan:'Gratuit'}</span></td>
+      <td>${u.questionsToday||0}</td><td style="color:var(--mist)">${u.joined||'—'}</td>
+      <td style="display:flex;gap:4px">
+        <button onclick="grantPrem(${u.id},'weekly')" style="background:var(--em-d);border:1px solid rgba(0,201,167,.3);color:var(--em2);padding:3px 7px;border-radius:5px;cursor:pointer;font-size:.72rem;font-family:'Outfit',sans-serif">+7j</button>
+        <button onclick="grantPrem(${u.id},'monthly')" style="background:var(--em-d);border:1px solid rgba(0,201,167,.3);color:var(--em2);padding:3px 7px;border-radius:5px;cursor:pointer;font-size:.72rem;font-family:'Outfit',sans-serif">+30j</button>
+        <button onclick="delUser(${u.id})" style="background:var(--danger-d);border:1px solid rgba(255,107,107,.2);color:var(--danger);padding:3px 7px;border-radius:5px;cursor:pointer;font-size:.72rem;font-family:'Outfit',sans-serif">Suppr.</button>
+      </td></tr>`).join('')}</tbody>`;
+}
+function filterUsers(q){renderTable(DB.users.filter(u=>u.name.toLowerCase().includes(q.toLowerCase())||u.email.toLowerCase().includes(q.toLowerCase())))}
+function grantPrem(id,type){
+  const u=DB.users.find(u=>u.id===id);if(!u)return;
+  const days=type==='weekly'?7:30;
+  const exp=new Date();exp.setDate(exp.getDate()+days);
+  u.plan=type;u.planExpiry=exp.toISOString();save();loadAdmin();
+  toast(`Premium accordé à ${u.name}`,'var(--ok)');
+}
+function delUser(id){
+  if(!confirm('Supprimer cet utilisateur ?'))return;
+  DB.users=DB.users.filter(u=>u.id!==id);save();loadAdmin();toast('Utilisateur supprimé','var(--danger)');
+}
+function approvePayment(id){
+  const p=DB.payments.find(p=>p.id===id);if(!p)return;
+  p.status='approved';grantPrem(p.userId,p.plan);save();loadAdmin();
+  toast('Paiement approuvé — Premium activé','var(--ok)');
+}
+function rejectPayment(id){
+  const p=DB.payments.find(p=>p.id===id);
+  if(p){p.status='rejected';save();loadAdmin();toast('Paiement rejeté','var(--danger)');}
+}
+function saveGeminiKey(){
+  const key=document.getElementById('gemini-key-input').value.trim();
+  if(!key){toast('Collez votre clé sk-or-...','var(--danger)');return}
+  localStorage.setItem('sceg_or_key',key);
+  document.getElementById('apikey-status').textContent='Clé configurée et active';
+  document.getElementById('apikey-status').style.color='var(--ok)';
+  toast('Clé OpenRouter enregistrée ! Le wiki répond maintenant.','var(--ok)');
+}
+function exportUsers(){
+  const csv='Nom,Email,Spécialité,Plan,Inscrit\n'+DB.users.map(u=>`${u.name},${u.email},${u.speciality||''},${u.plan},${u.joined||''}`).join('\n');
+  const a=document.createElement('a');a.href='data:text/csv;charset=utf-8,'+encodeURIComponent(csv);a.download='sceg_users.csv';a.click();
+}
+function clearOldData(){toast('Données nettoyées','var(--ok)') }
+</script>
+</body>
+</html>
